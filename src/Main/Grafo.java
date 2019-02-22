@@ -1,5 +1,7 @@
 package Main;
 
+import java.util.ArrayList;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,15 +13,16 @@ package Main;
  * @author Hector
  */
 public class Grafo {
-    int grafo[][];
-    int nodos;
     
-    boolean Euleriano(){
-        int i,j, grado;
-        for(i=0;i<nodos;i++){
-            grado =0;
-            for(j=0;j<nodos;j++){
-                grado+= grafo[i][j];
+    
+    
+    
+    boolean Euleriano( Matriz matriz){
+        int grado;
+        for(ArrayList<Integer> aristas: matriz.getMatriz()){
+            grado=0;    
+            for(Integer arista: aristas){
+                grado+=arista;
             }
             if(grado%2!=0){
                 return false;
@@ -27,5 +30,6 @@ public class Grafo {
         }
         return true;
     }
-    
 }
+    
+

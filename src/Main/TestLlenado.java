@@ -15,6 +15,7 @@ public class TestLlenado {
     public static void main(String args[]) {
         Matriz m1 = new Matriz(4);
         ArrayList<Integer> m = new ArrayList<>();
+        Grafo Euler = new Grafo();
         
         m.add(0);
         m.add(1);
@@ -26,15 +27,21 @@ public class TestLlenado {
         m.add(0);
         m.add(1);
         m.add(1);
-        m.add(0);
+        m.add(1);
         m.add(1);
         m.add(0);
         m.add(0);
         m.add(1);
-        m.add(0);
+        m.add(1);
         
         m1.llenar(m);
         m1.printMatriz();
+        if(Euler.Euleriano(m1)){
+            System.out.println("Es euleriano");
+        }else{
+             System.out.println("Ups");
+        }
+        
         
     }
 }

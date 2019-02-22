@@ -15,10 +15,20 @@ public class Matriz {
     private int len;
     private ArrayList<ArrayList<Integer>> matriz;
     
+    
     public Matriz(int len) {
         this.len = len;
         this. matriz = new ArrayList<ArrayList<Integer>>();
     }
+
+    public int getLen() {
+        return len;
+    }
+
+    public ArrayList<ArrayList<Integer>> getMatriz() {
+        return matriz;
+    }
+    
     
     public void llenar(ArrayList<Integer> datos) {
         int i=0;
