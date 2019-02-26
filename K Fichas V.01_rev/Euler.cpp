@@ -8,6 +8,8 @@ class Euleriano{
     Euleriano(int n);
     void SetMatriz(int **matriz);
     int EsEuleriano();
+    string camino();
+    int aristas();
     ~Euleriano();
 };
 
@@ -36,6 +38,44 @@ int Euleriano::EsEuleriano(){
   }
   return 1;
 }
+
+string Euleriano::camino(){
+  while(aristas()!=0){
+
+  }
+  return "";
+}
+
+int Euleriano::aristas(){
+  int aristas=0;
+  int lazos=0;
+  for(int x=0;x<n;x++){
+      for(int y=0;y<n;y++){
+            if(x!=y){
+              aristas += MatrizDeVectores[x][y];
+            }else{
+              lazos+= MatrizDeVectores[x][y];
+            }
+      }
+  }
+  return ((aristas/2)+lazos);
+}
+
+int Euleriano::GradoMayor(){
+int Grado=0;
+int aux=0;
+  for(int x=0;x<n;x++){
+    int Grado=0;
+      for(int y=0;y<n;y++){
+              aux += MatrizDeVectores[x][y];
+      }
+      if(Grado<aux){
+        Grado==x;
+      }
+  }
+  return Grado;
+}
+
 Euleriano::~Euleriano(){
   for(int x=0;x<n;x++){
       for(int y=0;y<n;y++){
