@@ -78,7 +78,7 @@ void Combinacion_alter::imprimirVectores() {
             cout <<") "<<endl;
         }
     }
-    else cout << "El conjunto está vacío." << endl;
+    else cout << "El conjunto esta vacio." << endl;
 }
 
 Combinacion_alter::~Combinacion_alter() {

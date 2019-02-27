@@ -20,6 +20,8 @@ class AdjacencyMatrix{
         void simetricReflex(int x,int y,int value);
         int getTam();// return the tam of the matrix
         int ** getMatriz();
+        //Hamiltoniano, consideramos que es mejor incluirlo como un metodo
+        bool Dirac();
 
 };
 AdjacencyMatrix::AdjacencyMatrix(int n){
@@ -114,6 +116,20 @@ void AdjacencyMatrix::simetricReflex(int x,int y,int value){
 void AdjacencyMatrix::setPos(int x,int y,int value){
     matrix[x][y]=value;
 }
+
+bool AdjacencyMatrix::Dirac(){
+    int grado=0;
+    for(int x=0;x<tam;x++){
+        grado= 0;
+        for(int y=0;y<tam;y++){
+            grado+=matrix[x][y];
+        }
+        if(grado>=tam/2)
+			return false;
+    }
+    return true;
+}
+
 AdjacencyMatrix::~AdjacencyMatrix(){
     for(int x=0;x<tam;x++){
         for(int y=0;y<tam;y++){
