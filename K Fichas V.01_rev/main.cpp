@@ -219,6 +219,11 @@ void escribirMatrizOriginal(ofstream &fs, AdjacencyMatrix &A) {
 		fs<<"Cumple teomera Dirac"<<endl;
 	else
 		fs<<"No cumple teomera Dirac"<<endl;
+	if(A.Ore())
+		fs<<"Cumple teomera Ore"<<endl;
+	else
+		fs<<"No cumple teomera Ore"<<endl;
+	
     fs << "---------------------------------------" << endl;
 }
 
@@ -244,4 +249,8 @@ void escribirMatrizToken(ofstream &fs, AdjacencyMatrix &mg, vector < vector < in
 		fs<<"Cumple teomera Dirac"<<endl;
 	else
 		fs<<"No cumple teomera Dirac"<<endl;
+	if(mg.Ore())
+		fs<<"Cumple teomera Ore"<<endl;
+	else
+		fs<<"No cumple teomera Ore"<<endl;
 }

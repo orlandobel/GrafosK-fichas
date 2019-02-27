@@ -22,6 +22,7 @@ class AdjacencyMatrix{
         int ** getMatriz();
         //Hamiltoniano, consideramos que es mejor incluirlo como un metodo
         bool Dirac();
+		bool Ore();
 
 };
 AdjacencyMatrix::AdjacencyMatrix(int n){
@@ -119,15 +120,37 @@ void AdjacencyMatrix::setPos(int x,int y,int value){
 
 bool AdjacencyMatrix::Dirac(){
     int grado=0;
+	float k= tam/2;
     for(int x=0;x<tam;x++){
         grado= 0;
         for(int y=0;y<tam;y++){
             grado+=matrix[x][y];
         }
-        if(grado>=tam/2)
+        if(grado<k)
 			return false;
     }
     return true;
+}
+
+bool AdjacencyMatrix::Ore(){
+	int gradov1=0;
+	int gradov2=0;
+	for(int x=0;x<tam;x++){
+		for(int y=0;y<tam;y++){
+			if(x!=y){
+				if(matrix[x][y]== 0){
+					for(int i=0; i<tam ; i++){
+						gradov1+=matrix[x][i];
+						gradov2+=matrix[i][y];
+					}
+					int gradov1v2=gradov1+gradov2;
+					if(gradov1v2<tam)
+						return false;
+				}
+			}
+		}
+	}
+	return true;
 }
 
 AdjacencyMatrix::~AdjacencyMatrix(){
