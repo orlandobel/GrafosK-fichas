@@ -1,11 +1,11 @@
 #include "AdjacencyMatrix.cpp"
 #include "combinacion_alter.cpp"
-/*#include "Euler.cpp"*/
+#include "Euler.cpp"
 
 // Prototipos de funciones
 void construirMatrizOriginal(AdjacencyMatrix &A);
 void construirMatrizToken(vector < vector<int> > vv, AdjacencyMatrix &mg, AdjacencyMatrix &A);
-void probarTokens(AdjacencyMatrix &A, int n/*, Euleriano En*/);
+void probarTokens(AdjacencyMatrix &A, int n, Euleriano En);
 int menuMatricesToken();
 void escribirArchivos(Combinacion_alter &ca, AdjacencyMatrix &mg, AdjacencyMatrix &A, string carpeta);
 string obtenerNombreArchivo(int n, int k);
@@ -20,8 +20,8 @@ int main() {
     cin >> n;
     // Instanciamos la matriz original
     AdjacencyMatrix A(n);
-    /*Euleriano En(n);
-    En.SetMatriz(A.getMatriz());*/
+    Euleriano En(n);
+    En.SetMatriz(A.getMatriz());
     // Método donde se construye de forma manual o el usuario debe
     // insertar el valor de cada posición.
     construirMatrizOriginal(A);
@@ -31,7 +31,7 @@ int main() {
     cout << endl;
 
     // Se dispone al usuario de un menú para la parte del k-token
-    probarTokens(A, n/*, En*/);
+    probarTokens(A, n, En);
 }
 
 void construirMatrizOriginal(AdjacencyMatrix &A) {
@@ -78,7 +78,7 @@ void construirMatrizToken(vector <vector<int> > vv, AdjacencyMatrix &mg, Adjacen
     }
 }
 
-void probarTokens(AdjacencyMatrix &A, int n/*, Euleriano En*/) {
+void probarTokens(AdjacencyMatrix &A, int n, Euleriano En) {
     bool ans = true;
     int opt = 0;
     do {
@@ -115,13 +115,14 @@ void probarTokens(AdjacencyMatrix &A, int n/*, Euleriano En*/) {
             cout << "\nSe han escrito: " <<(n-1)<< " archivo(s)" << endl;
             ans = false; // con esto se termina el flujo del programa
         }
-      /*  else if(opt == 4){
+        else if(opt == 4){
           if(En.EsEuleriano() != 0){
             cout << "\nEs Euleriano"<<endl;
+            cout << "El camino es: "<<En.camino();
           }else{
-            cout << "\nNo es Euleriano"<<endl;
+            cout << "\nNo es Euleriano (posible semieuleriano)"<<endl;
           }
-        }*/
+        }
         else ans = false;
     } while(ans);
 }
@@ -131,12 +132,12 @@ int menuMatricesToken() {
     cout << "\nElija una opcion: " << endl;
     cout << "(1) Probar con una k" << endl;
     cout << "(2) Generar archivos para todas las k" << endl;
-  //  cout << "(4) Probar si es euleriano" << endl;
+    cout << "(4) Probar si es euleriano" << endl;
     cout << "(3) Sair"<<endl;
     do {
         cout << ">> ";
         cin >> opt;
-        if(opt != 1 && opt != 2 && opt != 3 /*&& opt !=4 */) {
+        if(opt != 1 && opt != 2 && opt != 3 && opt !=4 ) {
             cout << "Elija una opcion valida" << endl;
         }
         else break;
