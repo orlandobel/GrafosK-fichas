@@ -4,11 +4,14 @@ class Euleriano{
   private:
     int n;
     int **MatrizDeVectores;
+    int aris;
   public:
     Euleriano(int n);
     void SetMatriz(int **matriz);
     int EsEuleriano();
+    int aristas();
     int GradoMayor();
+    bool gradoUno(int i);
     string camino();
     int aristas();
     ~Euleriano();
@@ -19,6 +22,7 @@ Euleriano::Euleriano(int n){
   MatrizDeVectores = new int*[n];
   for (int i = 0; i < n; i++)
     MatrizDeVectores[i] = new int[n];
+  aris = aristas();
 
 }
 
@@ -40,42 +44,57 @@ int Euleriano::EsEuleriano(){
   return 1;
 }
 
+int Euleriano::aristas() {
+    int aristas=0;
+    for(int i=0;i<n;i++) {
+        for(int j=0;j<nj++) {
+            aristas += MatrizDeVectores[i][j];
+        }
+    }
+    return aristas;
+}
+
 string Euleriano::camino(){
     int i=0;
     int j=GradoMayor();
+    int inicio=j;
     /*i y j son las coordenadas de los nodos*/
-    int v=0; //variable que nos indica en numero de vuelta del ciclo
-    int u=0; //variable para guardar los caminos usados
-    string caminos[n]; //arreglo en el que se almacenan los caminos a impriir
-    string usados[2*n]; //se guardan los caminos encontrados y sus inveros para evitar repetirlos
+    int v=0;
+    bool vacio = false;
+    string caminos[aris+1];
     do {
         i=j; //se ueve i al valor anterior de j para iniciar desde el nodo anterior
         j++; //se aumentaa j en uno para empezar a buscar el siguiente nodo
+        int ceros=0;
 
         string camino;
         for(int k=0;k<(n*n);k++) {
             j%=n; //busca la siguiente coordenada de j  para el proximo nodo
             camino = to_string(i)+"-"+to_string(j); //crea el caino i-j para comprovar si es valido
-            if(camino.compare(usados[k])==0 || MatrizDeVectores[i][j]==0) {
-                //entra cuando el camino usado ya existe o si no hay conección en el nodo
+            if(j==inicio && gradoUno(i)==false) {
                 j++;
+            }
+            if(MatrizDeVectores[i][j]==0) {
+                j++;
+                ceros++;
                 k=-1; //reinicia el ciclo
+            }
+            if(ceros == (n*n)) {
+                vacio = true;
+                break;
             }
         }
 
         string aux = to_string(j)+"-"+to_string(i); //camino inverso, evita repetir aristas y vertices
-        usados[u]=camino;
-        usados[u+1]=aux;
-        //guarda el camino enconttrado y sun inerso en el arreglo usados para que no se repitan
-        caminos[v]=camino;
-        //guarda el camino en el arreglo para su impreci´pn
+        MatrizDeVectores[i][j]--;
+        MatrizDeVectores[j][i]--;
 
+        caminos[v]=camino;
         v++;
-        u += 2; //se aumenta en dos para no sobreescribir ningun camino en el arreglo de usados
-    } while(v<n); //el ciclo termina cuando dio el mismo numero de vueltas que el grado del grafo
+    } while(vacio==false);
 
     string cam; //variable en la que se concanetaran los caminos para imprimirlos
-    for(int k=0;k<n;k++) {
+    for(int k=0;k<=aris;k++) {
         cam += caminos[k]+","; //concatenación de los caminos
     }
 
@@ -111,6 +130,20 @@ int Euleriano::GradoMayor() {
         }
     }
     return Grado;
+}
+
+bool Euleriano::gradoUno(int i) {
+    int grado = 0;
+    for(int j=0;j<n;j++) {
+        if(MatrizDeVectores[i][j]>0) {
+            grado++;
+        }
+    }
+    if(grado==1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 Euleriano::~Euleriano(){
