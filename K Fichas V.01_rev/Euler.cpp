@@ -9,7 +9,6 @@ class Euleriano{
     Euleriano(int n);
     void SetMatriz(int **matriz);
     int EsEuleriano();
-    int aristas();
     int GradoMayor();
     bool gradoUno(int i);
     string camino();
@@ -22,12 +21,11 @@ Euleriano::Euleriano(int n){
   MatrizDeVectores = new int*[n];
   for (int i = 0; i < n; i++)
     MatrizDeVectores[i] = new int[n];
-  aris = aristas();
-
 }
 
 void Euleriano::SetMatriz(int **matriz){
   this->MatrizDeVectores=matriz;
+  aris = aristas();
 }
 
 int Euleriano::EsEuleriano(){
@@ -47,7 +45,7 @@ int Euleriano::EsEuleriano(){
 int Euleriano::aristas() {
     int aristas=0;
     for(int i=0;i<n;i++) {
-        for(int j=0;j<nj++) {
+        for(int j=i;j<n;j++) {
             aristas += MatrizDeVectores[i][j];
         }
     }
@@ -94,13 +92,13 @@ string Euleriano::camino(){
     } while(vacio==false);
 
     string cam; //variable en la que se concanetaran los caminos para imprimirlos
-    for(int k=0;k<=aris;k++) {
+    for(int k=0;k<aris;k++) {
         cam += caminos[k]+","; //concatenación de los caminos
     }
 
     return cam;
 }
-
+/*
 int Euleriano::aristas(){
   int aristas=0;
   int lazos=0;
@@ -115,6 +113,7 @@ int Euleriano::aristas(){
   }
   return ((aristas/2)+lazos);
 }
+*/
 
 int Euleriano::GradoMayor() {
     int Grado=0;

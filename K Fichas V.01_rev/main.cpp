@@ -21,10 +21,10 @@ int main() {
     // Instanciamos la matriz original
     AdjacencyMatrix A(n);
     Euleriano En(n);
-    En.SetMatriz(A.getMatriz());
     // Método donde se construye de forma manual o el usuario debe
     // insertar el valor de cada posición.
     construirMatrizOriginal(A);
+    En.SetMatriz(A.getMatriz());
     // Mostramos la matriz original
     cout << "\nMatriz original: " << endl;
     A.showMatrix();
