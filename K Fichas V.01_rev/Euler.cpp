@@ -46,7 +46,11 @@ int Euleriano::aristas() {
     int aristas=0;
     for(int i=0;i<n;i++) {
         for(int j=i;j<n;j++) {
-            aristas += MatrizDeVectores[i][j];
+            if(i==j && MatrizDeVectores[i][j]>0) {
+                aristas++;
+            } else {
+                aristas += MatrizDeVectores[i][j];
+            }
         }
     }
     return aristas;
@@ -58,6 +62,7 @@ string Euleriano::camino(){
     int inicio=j;
     /*i y j son las coordenadas de los nodos*/
     int v=0;
+
     bool vacio = false;
     string caminos[aris+1];
     do {
@@ -66,26 +71,34 @@ string Euleriano::camino(){
         int ceros=0;
 
         string camino;
-        for(int k=0;k<(n*n);k++) {
-            j%=n; //busca la siguiente coordenada de j  para el proximo nodo
-            camino = to_string(i)+"-"+to_string(j); //crea el caino i-j para comprovar si es valido
-            if(j==inicio && gradoUno(i)==false) {
-                j++;
-            }
-            if(MatrizDeVectores[i][j]==0) {
-                j++;
-                ceros++;
-                k=-1; //reinicia el ciclo
-            }
-            if(ceros == (n*n)) {
-                vacio = true;
-                break;
+        if(i==(j-1) && MatrizDeVectores[i][i]>0 ) {
+            MatrizDeVectores[i][j-1] = 0;
+            camino = to_string(i)+"-"+to_string(j-1);
+            j=i;
+        } else {
+            for(int k=0;k<(n*n);k++) {
+                j%=n; //busca la siguiente coordenada de j  para el proximo nodo
+                camino = to_string(i)+"-"+to_string(j); //crea el caino i-j para comprovar si es valido
+
+                if(j==inicio && gradoUno(i)==false) {
+                    j++;
+                }
+                if(MatrizDeVectores[i][j]==0) {
+                    j++;
+                    ceros++;
+                    k=-1; //reinicia el ciclo
+                }
+                if(ceros == (n*n)) {
+                    vacio = true;
+                    break;
+                }
             }
         }
 
         string aux = to_string(j)+"-"+to_string(i); //camino inverso, evita repetir aristas y vertices
         MatrizDeVectores[i][j]--;
         MatrizDeVectores[j][i]--;
+        //if i!=j
 
         caminos[v]=camino;
         v++;
