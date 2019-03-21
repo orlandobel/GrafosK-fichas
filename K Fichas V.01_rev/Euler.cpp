@@ -13,6 +13,7 @@ class Euleriano{
     bool gradoUno(int i);
     string camino();
     int aristas();
+    int nodoSiguiente(int matriz[], int v);
     ~Euleriano();
 };
 
@@ -67,13 +68,18 @@ string Euleriano::camino(){
     string caminos[aris+1];
     do {
         i=j; //se ueve i al valor anterior de j para iniciar desde el nodo anterior
-        j++; //se aumentaa j en uno para empezar a buscar el siguiente nodo
+        j=nodoSiguiente(MatrizDeVectores[i],i); //se aumentaa j en uno para empezar a buscar el siguiente nodo
         int ceros=0;
 
+        cout<<"j: "<<j<<endl;
         string camino;
         if(i==(j-1) && MatrizDeVectores[i][i]>0 ) {
             MatrizDeVectores[i][j-1] = 0;
             camino = to_string(i)+"-"+to_string(j-1);
+            j=i;
+        } else if(i==(j+1) && MatrizDeVectores[i][i]>0){
+            MatrizDeVectores[i][j+1] = 0;
+            camino = to_string(i)+"-"+to_string(j+1);
             j=i;
         } else {
             for(int k=0;k<(n*n);k++) {
@@ -111,22 +117,6 @@ string Euleriano::camino(){
 
     return cam;
 }
-/*
-int Euleriano::aristas(){
-  int aristas=0;
-  int lazos=0;
-  for(int x=0;x<n;x++){
-      for(int y=0;y<n;y++){
-            if(x!=y){
-              aristas += MatrizDeVectores[x][y];
-            }else{
-              lazos+= MatrizDeVectores[x][y];
-            }
-      }
-  }
-  return ((aristas/2)+lazos);
-}
-*/
 
 int Euleriano::GradoMayor() {
     int Grado=0;
@@ -156,6 +146,24 @@ bool Euleriano::gradoUno(int i) {
     } else {
         return false;
     }
+}
+
+int Euleriano::nodoSiguiente(int matriz[], int v) {
+    int mayor = 0;
+
+    for(int i=0;i<n;i++) {
+        if(matriz[i]>0) {
+            int grado=0;
+            for(int j=0;j<n;j++){
+                grado += MatrizDeVectores[i][j];
+                if(grado>mayor) {
+                    mayor = i;
+                }
+            }
+        }
+    }
+
+    return mayor;
 }
 
 Euleriano::~Euleriano(){
