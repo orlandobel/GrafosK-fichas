@@ -71,16 +71,11 @@ string Euleriano::camino(){
         j=nodoSiguiente(MatrizDeVectores[i],i); //se aumentaa j en uno para empezar a buscar el siguiente nodo
         int ceros=0;
 
-        cout<<"j: "<<j<<endl;
         string camino;
-        if(i==(j-1) && MatrizDeVectores[i][i]>0 ) {
-            MatrizDeVectores[i][j-1] = 0;
-            camino = to_string(i)+"-"+to_string(j-1);
+        if(MatrizDeVectores[i][i]>0 ) {
             j=i;
-        } else if(i==(j+1) && MatrizDeVectores[i][i]>0){
-            MatrizDeVectores[i][j+1] = 0;
-            camino = to_string(i)+"-"+to_string(j+1);
-            j=i;
+            MatrizDeVectores[i][j] = 0;
+            camino = to_string(i)+"-"+to_string(j);
         } else {
             for(int k=0;k<(n*n);k++) {
                 j%=n; //busca la siguiente coordenada de j  para el proximo nodo
@@ -150,20 +145,26 @@ bool Euleriano::gradoUno(int i) {
 
 int Euleriano::nodoSiguiente(int matriz[], int v) {
     int mayor = 0;
+    int nodo = 0;
 
+    cout<<"actual: "<<v<<endl;
     for(int i=0;i<n;i++) {
         if(matriz[i]>0) {
             int grado=0;
             for(int j=0;j<n;j++){
                 grado += MatrizDeVectores[i][j];
                 if(grado>mayor) {
-                    mayor = i;
+                    mayor = grado;
+                    nodo = i;
+                    cout<<"grado: "<<grado<<endl;
+                    cout<<"mayor: "<<mayor<<endl;
+
                 }
             }
         }
     }
-
-    return mayor;
+    cout<<"siguiente: "<<nodo<<endl;
+    return nodo;
 }
 
 Euleriano::~Euleriano(){
