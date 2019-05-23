@@ -13,6 +13,7 @@ void reemplazar(string fichero, string camino) {
     nuevo.open(fichero,ios::out);
     if(nuevo.fail()) {
         cout<<"error a remplazar"<<endl;
+        system("pause");
         exit(1);
     }
     nuevo<<camino;
@@ -20,7 +21,7 @@ void reemplazar(string fichero, string camino) {
     nuevo.close();
 }
 
-string replace(string word, string target, string replacement){
+string replace(string word, string target, string replacement) {
     int len, loop=0;
     string nword="", let;
     len=word.length();
@@ -39,8 +40,8 @@ string replace(string word, string target, string replacement){
     return nword;
 }
 
+void limpiar(string ruta, string nombre) {
     ifstream camino;
-    void limpiar(string ruta, string nombre) {
     string camLeido;
     string fichero = ruta + "/" + nombre;
 
@@ -73,7 +74,10 @@ string replace(string word, string target, string replacement){
 
         cout<<"aux="<<aux<<endl;
         reemplazar(fichero, aux);
+        //cout<<"fichero remplazado: "<<fichero<<endl;
 
         camino.close();
+
+        //system("pause");
     }
 }

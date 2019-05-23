@@ -1,6 +1,5 @@
 #include "AdjacencyMatrix.cpp"
 #include "combinacion_alter.cpp"
-//#include "algoritmosColoracion.cpp"
 #include "leerArchivoMatrizAdyacencia.cpp"
 #include "limpiar.cpp"
 
@@ -17,10 +16,12 @@ void escribirMatrizToken(ofstream &fs, AdjacencyMatrix &mg, vector < vector < in
 char extraerCaracter(ifstream &archivo, int puntero);
 void escribirRutaImagen(string ruta);
 void escribirRutaCaminos(string ruta1, string ruta2);
+void escribirBoolHam(string ruta);
+void escribirBoolEuler(string ruta);
 
 int main() {
 	system("clear"); // Limpiar la pantalla GNU/Linux
-    system("cls");   // Limpiar la pantalla Windows
+	system("cls");   // Limpiar la pantalla Windows
 
     int n = 0;
     int opt = construirMatrizOriginal(n);
@@ -126,20 +127,12 @@ void probarTokens(AdjacencyMatrix &A, int n) {
             vectores = ca.getVectores();
 
 			AdjacencyMatrix mg(vectores.size());
-            mg.generateZeroMatrix();
-
+      		mg.generateZeroMatrix();
 			construirMatrizToken(vectores, mg, A);
 
 			// Se escribe la matriz en el archivo
-            LecturaMatriz::escribirEnArchivo("archivosWolfram/matrix.txt", mg);
+      LecturaMatriz::escribirEnArchivo("archivosWolfram/matrix.txt", mg);
 
-			// Se ejecuta el script de wolfram
-            //system("wolframscript -file ../archivosWolfram/getCromatico.wl");
-
-			// Se hace la resta entre los números cromáticos
-            //cout << "####\nX(G) - X(F_k(G))= " << xg - xf_kg << "\n###" << endl;
-
-			// Mostrar el resultado de la coloración
 
 			cout << "\nMatriz generada con k:" << endl;
             mg.showMatrix(vectores);
@@ -170,19 +163,10 @@ void probarTokens(AdjacencyMatrix &A, int n) {
                 vector <string> resultadoColoracion;
 
 				// Se escribe la matriz en el archivo
-                LecturaMatriz::escribirEnArchivo("chivosWolfram/matrix.txt", mg);
+                LecturaMatriz::escribirEnArchivo("achivosWolfram/matrix.txt", mg);
 
 				// Se escribe la ruta para guardar la imagen
                 escribirRutaImagen("../" + carpeta + "/grafo_" + to_string(k) + ".jpg");
-
-				// Se ejecuta el script de wolfram
-                //system("wolframscript -file archivosWolfram/getCromatico.wl");
-
-				// ca: Vectores de tamaño k
-                // mg: Matriz de adyacencia del k-token
-                // A: Matriz de adyacencia 'original'
-                // carpeta: El directorio donde se escribirán los archivos
-                // xf_kg y x_g los números cromáticos
 				escribirArchivos(ca, mg, A, carpeta);
             }
 
@@ -198,13 +182,19 @@ void probarTokens(AdjacencyMatrix &A, int n) {
 			escribirRutaImagen("../" + carpeta + "/grafo.jpg");
 			escribirRutaCaminos("../" + carpeta + "/euler.txt", "../" + carpeta + "/ham.txt");
 
-			system("wolframscript -file PruebasLecturas/Circuitos.wl");
+			system("wolframscript -file PruebasLecturas/EulerianCycle.wl");
+			escribirBoolEuler("" + carpeta + "/euler.txt");
 
 			string nombre = "euler.txt";
 			limpiar(carpeta,nombre);
 
+			system("wolframscript -file PruebasLecturas/HamiltonianCycle.wl");
+			escribirBoolHam("" + carpeta + "/ham.txt");
+
 			nombre = "ham.txt";
 			limpiar(carpeta,nombre);
+
+			system("wolframscript -file PruebasLecturas/dibujarGrafo.wl");
 
 			system("clear");
 			system("cls");
@@ -212,17 +202,39 @@ void probarTokens(AdjacencyMatrix &A, int n) {
 
 		}
 		else if (opt == 4){
+			vector < vector<int> > vectores;
 			string carpeta =obtenerNombreCarpeta(A.getTam())+"_caminos";
-
 			system(("mkdir "+ carpeta).c_str());
 			system(("cd "+ carpeta).c_str());
 
-			vector < vector<int> > vectores;
+			LecturaMatriz::escribirEnArchivo("archivosWolfram/matrix.txt", A);
+			escribirRutaImagen("../" + carpeta + "/grafo_Original.jpg");
+			escribirRutaCaminos("../" + carpeta + "/euler_Original.txt", "../" + carpeta + "/ham_Original.txt");
+
+			system("wolframscript -file PruebasLecturas/EulerianCycle.wl");
+			escribirBoolEuler("" + carpeta + "/euler_Original.txt");
+
+			string nombre = "euler_Original.txt";
+			limpiar(carpeta,nombre);
+
+			system("wolframscript -file PruebasLecturas/HamiltonianCycle.wl");
+			escribirBoolHam("" + carpeta + "/ham_Original.txt");
+
+			nombre = "ham_Original.txt";
+			limpiar(carpeta,nombre);
+
+			system("wolframscript -file PruebasLecturas/dibujarGrafo.wl");
+
+			system("clear");
+			system("cls");
 
 			for (int k = 2; k <= int(n/2); k++) {
 				Combinacion_alter ca(n, k);
 				vectores = ca.getVectores();
 				AdjacencyMatrix mg(vectores.size());
+
+				mg.generateZeroMatrix();
+				construirMatrizToken(vectores, mg, A);
 
 				LecturaMatriz::escribirEnArchivo("archivosWolfram/matrix.txt", mg);
 
@@ -230,13 +242,19 @@ void probarTokens(AdjacencyMatrix &A, int n) {
 				escribirRutaCaminos("../" + carpeta + "/euler_"+to_string(k)+".txt", "../" + carpeta + "/ham"+to_string(k)+".txt");
 
 				// Se ejecuta el script de wolfram
-				system("wolframscript -file PruebasLecturas/Circuitos.wl");
+				system("wolframscript -file PruebasLecturas/EulerianCycle.wl");
+				escribirBoolEuler("" + carpeta + "/euler_"+to_string(k)+".txt");
 
 				string nombre = "euler_" + to_string(k) + ".txt";
 				limpiar(carpeta,nombre);
 
+				system("wolframscript -file PruebasLecturas/HamiltonianCycle.wl");
+				escribirBoolHam("" + carpeta + "/ham"+to_string(k)+".txt");
+
 				nombre = "ham" + to_string(k) + ".txt";
 				limpiar(carpeta,nombre);
+
+				system("wolframscript -file PruebasLecturas/dibujarGrafo.wl");
 			}
 
 			system("clear");
@@ -396,4 +414,70 @@ void escribirRutaCaminos(string ruta1, string ruta2) {
 		Ham << ruta2;
 		Ham.close();
 
+}
+
+void escribirBoolHam(string ruta) {
+	ifstream hamCompare;
+	ofstream hamWrite;
+	string ham;
+	string fichero = "archivosWolfram/boolHam.txt";
+
+	hamCompare.open(ruta,ios::in);
+
+	if(hamCompare.fail()) {
+		cout<<"error al comprobar ciclo"<<endl;
+		system("pause");
+		exit(1);
+	} else {
+		string aux;
+		ham = "Si";
+		getline(hamCompare,aux);
+		if(aux.compare("{}")==0) {
+			ham = "No";
+		}
+	}
+
+	hamCompare.close();
+	hamWrite.open(fichero,ios::out);
+	if(hamWrite.fail()) {
+		cout<<"error en la escritura"<<endl;
+		system("pause");
+		exit(1);
+	}
+
+	hamWrite<<ham;
+	hamWrite.close();
+}
+
+void escribirBoolEuler(string ruta) {
+	ifstream eulerCompare;
+	ofstream eulerWrite;
+	string euler;
+	string fichero = "archivosWolfram/boolEuler.txt";
+
+	eulerCompare.open(ruta,ios::in);
+
+	if(eulerCompare.fail()) {
+		cout<<"error al comprobar ciclo"<<endl;
+		system("pause");
+		exit(1);
+	} else {
+		string aux;
+		euler = "Si";
+		getline(eulerCompare,aux);
+		if(aux.compare("{}")==0) {
+			euler = "No";
+		}
+	}
+	eulerCompare.close();
+
+	eulerWrite.open(fichero,ios::out);
+	if(eulerWrite.fail()) {
+		cout<<"error en la escritura"<<endl;
+		system("pause");
+		exit(1);
+	}
+
+	eulerWrite<<euler;
+	eulerWrite.close();
 }
