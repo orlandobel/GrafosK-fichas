@@ -51,6 +51,7 @@ void limpiar(string ruta, string nombre) {
         cout<<"error al reemplazar"<<endl;
         cout<<"error en el fichero: "<<fichero<<endl;
         system("pause");
+        exit(1);
     } else {
         string aux;
         int i = 0;
@@ -74,10 +75,7 @@ void limpiar(string ruta, string nombre) {
 
         cout<<"aux="<<aux<<endl;
         reemplazar(fichero, aux);
-        //cout<<"fichero remplazado: "<<fichero<<endl;
 
         camino.close();
-
-        //system("pause");
     }
 }

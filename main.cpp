@@ -110,70 +110,7 @@ void probarTokens(AdjacencyMatrix &A, int n) {
 
 	do {
         opt = menuMatricesToken();
-
-	    if(opt == 1) { // Para probar una k en específico
-            int k;
-            vector < vector<int> > vectores;
-
-            cout << "\nInserte el k-token del grafo tal que 2 <= k <= " << int (n/2) << endl;
-            cout << ">> ";
-            cin >> k;
-
-            Combinacion_alter ca(n, k);
-
-            cout << "\nLista de vectores:" << endl;
-
-			ca.imprimirVectores();
-            vectores = ca.getVectores();
-
-			AdjacencyMatrix mg(vectores.size());
-      		mg.generateZeroMatrix();
-			construirMatrizToken(vectores, mg, A);
-
-			// Se escribe la matriz en el archivo
-      LecturaMatriz::escribirEnArchivo("archivosWolfram/matrix.txt", mg);
-
-
-			cout << "\nMatriz generada con k:" << endl;
-            mg.showMatrix(vectores);
-        }
-        else if(opt == 2) { // Generar archivos para las distintas k
-            vector < vector<int> > vectores;
-            string carpeta = obtenerNombreCarpeta(A.getTam());
-
-            system(("mkdir " + carpeta).c_str());
-            system(("cd " + carpeta).c_str());
-
-            cout << "Trabajando..." << endl;
-
-			// Guardamos la imagen del grafo original
-            	// Se escribe la matriz en el archivo
-            LecturaMatriz::escribirEnArchivo("archivosWolfram/matrix.txt", A);
-                // Se escribe la ruta para guardar la imagen
-            escribirRutaImagen("../" + carpeta + "/original.jpg");
-                // Se ejecuta el script de wolfram
-            //system("wolframscript -file /chivosWolfram/getCromatico.wl");
-
-            for (int k = 2; k <= int(n/2); k++) {
-                Combinacion_alter ca(n, k);
-                vectores = ca.getVectores();
-                AdjacencyMatrix mg(vectores.size());
-                mg.generateZeroMatrix();
-                construirMatrizToken(vectores, mg, A);
-                vector <string> resultadoColoracion;
-
-				// Se escribe la matriz en el archivo
-                LecturaMatriz::escribirEnArchivo("achivosWolfram/matrix.txt", mg);
-
-				// Se escribe la ruta para guardar la imagen
-                escribirRutaImagen("../" + carpeta + "/grafo_" + to_string(k) + ".jpg");
-				escribirArchivos(ca, mg, A, carpeta);
-            }
-
-            cout << "\nSe han escrito los archivos en: " << carpeta << endl;
-            ans = false; // con esto se termina el flujo del programa
-        }
-		else if( opt == 3){
+		else if( opt == 1){
 			string carpeta = obtenerNombreCarpeta(A.getTam()) + "_camino_original";
 			system(("mkdir " + carpeta).c_str());
 			system(("cd " + carpeta).c_str());
@@ -201,7 +138,7 @@ void probarTokens(AdjacencyMatrix &A, int n) {
 			cout<<"¡Archivos creados!"<< endl;
 
 		}
-		else if (opt == 4){
+		else if (opt == 2){
 			vector < vector<int> > vectores;
 			string carpeta =obtenerNombreCarpeta(A.getTam())+"_caminos";
 			system(("mkdir "+ carpeta).c_str());
@@ -270,11 +207,9 @@ void probarTokens(AdjacencyMatrix &A, int n) {
 int menuMatricesToken() {
     int opt;
     cout << "\nElija una opcion: " << endl;
-    //cout << "(1) Probar con una k" << endl;
-    //cout << "(2) Generar archivos para todas las k" << endl;
-	cout << "(3) Generar caminos euleriano y hamiltoniano" << endl;
-	cout << "(4) Generar caminos para todas las k" << endl;
-    cout << "(5) Salir" << endl;
+	cout << "(1) Generar caminos euleriano y hamiltoniano solo para el grafo original" << endl;
+	cout << "(2) Generar caminos para el grafo original y todas sus k-fichas" << endl;
+    cout << "(3) Salir" << endl;
     do {
         cout << ">> ";
         cin >> opt;
@@ -301,8 +236,6 @@ void escribirArchivos(Combinacion_alter &ca, AdjacencyMatrix &mg, AdjacencyMatri
         escribirMatrizToken(fs, mg, vectores);
     else
         fs << "\nMatriz muy grande" << endl;
-
-    fs << "\nColoración del grafo K-token: " << endl;
 
     fs.close();
 }
